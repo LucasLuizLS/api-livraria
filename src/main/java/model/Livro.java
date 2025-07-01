@@ -1,0 +1,20 @@
+package model;
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.Data;
+
+@Data
+@Entity
+
+public class Livro {
+    @Id
+    @GeneratedValue
+
+    private Long Id;
+    private String titulo;
+    private String autor;
+    private int ano;
+}
