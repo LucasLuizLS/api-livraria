@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -25,7 +26,7 @@ public class LivroService {
         return dto;
     }
 
-    private Livro toEntity(LivroDTO dto){
+    private Livro toEntity(LivroDTO dto) {
         Livro livro = new Livro();
         livro.setId(dto.getId());
         livro.setTitulo(dto.getTitulo());
@@ -34,10 +35,25 @@ public class LivroService {
         return livro;
     }
 
-    public List<LivroDTO> listar(){
-        return livroRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
+    public List<LivroDTO> listar() {
+        return LivroRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    public Optional<LivroDTO> buscar(Long id){
-        return livroRepository.findById(id).map(this::toDTO);
+    public Optional<LivroDTO> buscar(Long id) {
+        return LivroRepository.findById(id).map(this::toDTO);
     }
+    public LivroDTO salvar(LivroDTO dto) {
+        Livro livro = toEntity(dto);
+        return toDTO(LivroRepository.save(livro));
+    }
+
+    public LivroDTO atualizar(Long id, LivroDTO dto) {
+        dto.setId(id);
+        Livro livro = toEntity(dto);
+        return toDTO(LivroRepository.save(livro));
+    }
+
+    public void deletar(Long id) {
+        LivroRepository.deleteById(id);
+    }
+}
